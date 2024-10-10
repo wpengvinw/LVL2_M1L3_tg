@@ -1,12 +1,12 @@
 import telebot
-from bot_logic import gen_pass, gen_emodji, flip_coin  # Импортируем функцию из bot_logic
+from bot_logic import gen_pass, gen_emodji, flip_coin  # Импортируем функции из bot_logic
 
 # Замени 'TOKEN' на токен твоего бота
 bot = telebot.TeleBot("TOKEN")
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "Привет! Я твой Telegram бот. Напиши команду /hello, /bye или /pass для генерации пароля!")
+    bot.reply_to(message, "Привет! Я твой Telegram бот. Напиши команду /hello, /bye, /pass, /emodji или /coin  ")
 
 @bot.message_handler(commands=['hello'])
 def send_hello(message):
