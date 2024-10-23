@@ -1,0 +1,65 @@
+import telebot
+import random
+
+from confic import token  # Убедитесь, что 'token' правильно импортирован
+bot = telebot.TeleBot(token)
+
+def gen_pass(pass_length):
+    elements = "+-/*!&$#?=@<>123456789"
+    password = ""
+    for i in range(pass_length):
+        password += random.choice(elements)
+    return password
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.reply_to(message, "Привет! Я твой Telegram бот. Напиши что-нибудь!")
+
+@bot.message_handler(commands=['hello'])
+def send_hello(message):
+    bot.reply_to(message, "Привет! Как дела?")
+
+@bot.message_handler(commands=['bye'])
+def send_bye(message):
+    bot.reply_to(message, "Пока! Удачи!")
+
+@bot.message_handler(commands=['penga'])
+def send_penga(message):
+    bot.reply_to(message, "Пингвины очень милые")
+
+@bot.message_handler(commands=['smile'])
+def send_smile(message):
+    smiles = ["😊", "😂", "😍", "😎", "😢", "😡", "🤔", "🤗", "🥳", "😇"]
+    random_smile = random.choice(smiles)
+    bot.reply_to(message, random_smile)
+
+@bot.message_handler(commands=['generate_password'])
+def generate_password(message):
+    pass_length = 12  # Вы можете изменить длину пароля по умолчанию
+    password = gen_pass(pass_length)
+    bot.reply_to(message, f"Сгенерированный пароль: {password}")
+
+@bot.message_handler(commands=['coin_flip'])
+def coin_flip(message):
+    result = random.choice(["Орел", "Решка"])
+    bot.reply_to(message, f"Результат подбрасывания монетки: {result}")
+
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    help_text = (
+        "/start - Запустить бота.n"
+        "/hello - Поздороваться.n"
+        "/bye - Попрощаться.n"
+        "/penga - Узнать о пингвинах.n"
+        "/smile - Получить случайный смайлик.n"
+        "/generate_password - Сгенерировать пароль.n"
+        "/coin_flip - Подбросить монетку.n"
+        "/help - Показать это сообщение."
+    )
+    bot.reply_to(message, help_text)
+
+@bot.message_handler(func=lambda message: True)
+def echo_all(message):
+    bot.reply_to(message, message.text)
+
+bot.polling()
